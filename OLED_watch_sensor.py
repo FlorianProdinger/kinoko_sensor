@@ -3,15 +3,6 @@
 
 
 
-import board
-import adafruit_sht31d
-import time
-i2c = board.I2C()
-sensor_sht31 = adafruit_sht31d.SHT31D(i2c)
-#sensor.temperature
-#23.114747844663157
-#sensor.relative_humidity
-
 
 from datetime import datetime
 
@@ -31,8 +22,26 @@ import OLED_1in51
 from PIL import Image,ImageDraw,ImageFont
 logging.basicConfig(level=logging.DEBUG)
 
-font_file_name = "NickTurboItalic3D.ttf"
+font_file_name = "SonicAdvanced2.ttf"
+#"NickTurboItalic3D.ttf"
 #"groovysmoothielaser.ttf" #FinalLap.ttf
+
+## sensor readout
+import board
+import adafruit_sht31d
+import time
+i2c = board.I2C()
+sensor_sht31 = adafruit_sht31d.SHT31D(i2c)
+
+def read_sensor_temp( ):
+    sensor_temp = round( sensor_sht31.temperature, 1)
+    #23.1
+    return(f"T:{sensor_temp}")
+
+def read_sensor_humi( ):
+    sensor_humi = round( sensor_sht31.relative_humidity )
+    # 40
+    return(f"H:{sensor_humi}")
 
 try:
  disp = OLED_1in51.OLED_1in51()
@@ -50,25 +59,35 @@ except IOError as e:
 try:
   
  while True:
-  time.sleep(0.1)
   # Create blank image for drawing.
   image1 = Image.new('1', (disp.width, disp.height), "WHITE")
   draw = ImageDraw.Draw(image1)
+  
   #logging.info ("***draw line")
   # draw.line([(0,0),(127,0)], fill = 0)
   # draw.line([(0,0),(0,63)], fill = 0)
-  # draw.line([(0,63),(127,63)], fill = 0)
+  draw.line([(5,28),(122,28)], fill = 0)
+  draw.line([(5,29),(122,29)], fill = 0)
   # draw.line([(127,0),(127,63)], fill = 0)
- 
+  
+  # time
   now = datetime.now()
   formatted_time = now.strftime("%H:%M:%S")
   
-  logging.info ("***draw time")
+  # sensor
+  sensor_temp_text = read_sensor_temp()
+  sensor_humi_text = read_sensor_humi()
+
+  #logging.info ("***draw time")
   #draw.text((25,10), 'Waveshare', fill = 0)
-  draw.text((5,5), f"{formatted_time}" , font = font2 , fill = 0)
+  draw.text((3,3), f"{formatted_time}" , font = font2 , fill = 0)
+  draw.text((3,25) , sensor_temp_text , font = font2 , fill = 0)
+  draw.text((55,25), sensor_humi_text , font = font2 , fill = 0)
 
   #image1 = image1.rotate(180) 
   disp.ShowImage(disp.getbuffer(image1))
+  
+  time.sleep(0.1)
  
 except KeyboardInterrupt:
  logging.info("ctrl + c:")
