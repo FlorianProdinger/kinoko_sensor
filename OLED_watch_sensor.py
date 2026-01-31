@@ -1,6 +1,18 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
+
+
+import board
+import adafruit_sht31d
+import time
+i2c = board.I2C()
+sensor_sht31 = adafruit_sht31d.SHT31D(i2c)
+#sensor.temperature
+#23.114747844663157
+#sensor.relative_humidity
+
+
 from datetime import datetime
 
 import sys
