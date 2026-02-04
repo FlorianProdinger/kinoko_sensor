@@ -28,10 +28,22 @@ font_file_name = "SonicAdvanced2.ttf"
 
 ## sensor readout
 import board
+
+# CO2 
+import adafruit_scd4x
+
+# humidity and temp
 import adafruit_sht31d
 import time
 i2c = board.I2C()
 sensor_sht31 = adafruit_sht31d.SHT31D(i2c)
+scd4x = adafruit_scd4x.SCD4X(i2c)
+scd4x.start_periodic_measurement()
+
+def read_sensor_co2( ):
+    sensor_co2 = scd4x.CO2
+    #1800
+    return(f"CO2:{sensor_co2}")
 
 def read_sensor_temp( ):
     sensor_temp = round( sensor_sht31.temperature, 1)
@@ -72,15 +84,17 @@ try:
   
   # time
   now = datetime.now()
-  formatted_time = now.strftime("%H:%M:%S")
+  formatted_time = now.strftime("%H:%M")
   
   # sensor
   sensor_temp_text = read_sensor_temp()
   sensor_humi_text = read_sensor_humi()
+  sensor_co2_text  = read_sensor_co2()
 
   #logging.info ("***draw time")
   #draw.text((25,10), 'Waveshare', fill = 0)
-  draw.text((3,3), f"{formatted_time}" , font = font2 , fill = 0)
+  draw.text((3, 3), f"{formatted_time}" , font = font2 , fill = 0)
+  draw.text((50,3),  sensor_co2_text , font = font2 , fill = 0)
   draw.text((3,25) , sensor_temp_text , font = font2 , fill = 0)
   draw.text((55,25), sensor_humi_text , font = font2 , fill = 0)
 
