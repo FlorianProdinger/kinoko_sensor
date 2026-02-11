@@ -36,7 +36,7 @@ import adafruit_scd4x
 import adafruit_sht31d
 import time
 i2c = board.I2C()
-#sensor_sht31 = adafruit_sht31d.SHT31D(i2c)
+sensor_sht31 = adafruit_sht31d.SHT31D(i2c)
 scd4x = adafruit_scd4x.SCD4X(i2c)
 scd4x.start_periodic_measurement()
 
@@ -46,22 +46,14 @@ def read_sensor_co2( ):
     return(f"CO2:{sensor_co2}")
 
 def read_sensor_temp( ):
-    #sensor_temp = round( sensor_sht31.temperature, 1)
-    #return(f"T:{sensor_temp}")
-    sensor_temp = scd4x.temperature
-    if sensor_temp == None:
-        return("NA")
-    else:
-        return("T:%0.1f" % sensor_temp)
+    sensor_temp = round( sensor_sht31.temperature, 1)
+    #23.1
+    return(f"T:{sensor_temp}")
 
 def read_sensor_humi( ):
-    #sensor_humi = round( sensor_sht31.relative_humidity )
-    #return(f"H:{sensor_humi}")
-    sensor_humi = scd4x.relative_humidity
-    if sensor_humi == None:
-        return("NA")
-    else:
-        return("H:%0.1f" % sensor_humi)
+    sensor_humi = round( sensor_sht31.relative_humidity )
+    # 40
+    return(f"H:{sensor_humi}")
 
 try:
  disp = OLED_1in51.OLED_1in51()
@@ -77,16 +69,26 @@ except IOError as e:
         
 
 try:
-  
+ x = 0
  while True:
   # Create blank image for drawing.
   image1 = Image.new('1', (disp.width, disp.height), "WHITE")
   draw = ImageDraw.Draw(image1)
+
+  # animation
+  if x < 100 :
+      x = x+1
+  else:
+      x = 0
+  draw.line([(10,0),(10+x,0)], fill = 0)
+  
   
   #logging.info ("***draw line")
   # draw.line([(0,0),(127,0)], fill = 0)
-  # draw.line([(0,0),(0,63)], fill = 0)
-  draw.line([(5,28),(122,28)], fill = 0)
+  #draw.line([(0,0),(0,63)], fill = 0)
+  draw.line([(46,3),(46,28)], fill = 0)
+  draw.line([(51,30),(51,90)], fill = 0)
+  #draw.line([(5,28),(122,28)], fill = 0)
   draw.line([(5,29),(122,29)], fill = 0)
   # draw.line([(127,0),(127,63)], fill = 0)
   
