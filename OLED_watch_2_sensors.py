@@ -80,7 +80,7 @@ try:
   else:
       x = 0
       with open( log_file_name, "a") as f:
-          data_entry_text = f"{scd4x.CO2}\t{round( sensor_sht31.temperature, 2)}\t{ sensor_sht31.relative_humidity}" 
+          data_entry_text = f"{scd4x.CO2}\t{round( sensor_sht31.temperature, 2)}\t{ round(sensor_sht31.relative_humidity,2)}\n" 
           f.write( data_entry_text)
           #print(data_entry_text)
 

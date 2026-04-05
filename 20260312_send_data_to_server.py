@@ -6,12 +6,12 @@ import os
 # Replace 'client = mqtt.Client()' with:
 # The IP of your Ubuntu Server
 BROKER_IP = "192.168.40.129"
-PORT = 31883
+PORT = 30001 
 # read the file
 
 
-FILE_PATH = "/home/florian/Documents/20260120_kinoko/record.tsv"
-TOPIC = "/home/florian/Documents/record.tsv"
+FILE_PATH = "/home/florian/Documents/20260120_kinoko/record_streamlit.tsv"
+TOPIC = "/home/florian/Documents/record_streamlit.tsv"
 
 client = mqtt.Client(CallbackAPIVersion.VERSION2)
 client.connect(BROKER_IP, PORT)
