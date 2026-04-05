@@ -2,8 +2,6 @@
 # -*- coding:utf-8 -*-
 
 
-
-
 from datetime import datetime
 
 import sys
@@ -66,7 +64,8 @@ try:
 
 except IOError as e:
  logging.info(e)
-        
+ 
+log_file_name = "/home/florian/Documents/20260120_kinoko/record_streamlit.tsv"
 
 try:
  x = 0
@@ -77,9 +76,14 @@ try:
 
   # animation
   if x < 100 :
-      x = x+1
+      x = x+10
   else:
       x = 0
+      with open( log_file_name, "a") as f:
+          data_entry_text = f"{scd4x.CO2}\t{round( sensor_sht31.temperature, 2)}\t{ sensor_sht31.relative_humidity}" 
+          f.write( data_entry_text)
+          #print(data_entry_text)
+
   draw.line([(10,0),(10+x,0)], fill = 0)
   
   
@@ -107,11 +111,13 @@ try:
   draw.text((50,3),  sensor_co2_text , font = font2 , fill = 0)
   draw.text((3,25) , sensor_temp_text , font = font2 , fill = 0)
   draw.text((55,25), sensor_humi_text , font = font2 , fill = 0)
+  
+  
 
   #image1 = image1.rotate(180) 
   disp.ShowImage(disp.getbuffer(image1))
   
-  time.sleep(0.1)
+  time.sleep(0.5)
  
 except KeyboardInterrupt:
  logging.info("ctrl + c:")
