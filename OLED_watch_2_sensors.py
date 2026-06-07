@@ -76,7 +76,7 @@ try:
 
   # animation
   if x < 100 :
-      x = x+10
+      x = x+25
   else:
       x = 0
       with open( log_file_name, "a") as f:
@@ -117,7 +117,7 @@ try:
   #image1 = image1.rotate(180) 
   disp.ShowImage(disp.getbuffer(image1))
   
-  time.sleep(0.5)
+  time.sleep(2)
  
 except KeyboardInterrupt:
  logging.info("ctrl + c:")
